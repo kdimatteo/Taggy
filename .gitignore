@@ -1,0 +1,7 @@
+*.pyc
+env_vars
+venv/*
+*.DS_Store
+.DS_Store
+calais_mq_tags.txt
+urls_642012.txt
