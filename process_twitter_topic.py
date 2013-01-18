@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import fileinput
+import os
 import simplejson
 import urllib
 import urllib2
@@ -32,7 +33,7 @@ def getTweets(hash_tag):
 
     content = " ".join(L)
     content = content.encode("utf-8")
-    
+
     try:
         result = calais.analyze(content)
         
@@ -44,22 +45,27 @@ def getTweets(hash_tag):
         print "--------"
         result.print_relations()
         '''
-        
     except:
         print "something is broken"
         pass
 
-    for item in result.entities:
-            if not re.match(pattern, item['name']):
-                #print "%s" % item['name']
-                OUTPUT.append(item['name'])
+    try:
+        for item in result.entities:
+                if not re.match(pattern, item['name']):
+                    OUTPUT.append(item['name'])
+    except:
+        print "no entities found"
                 
-    for item in result.topics:
-        if not re.match(pattern, item['categoryName']):
-            #print "%s" % item['categoryName']
-            OUTPUT.append(item['categoryName'])
-            
-    print ", ".join(OUTPUT)
+    try:
+        for item in result.topics:
+            if not re.match(pattern, item['categoryName']):
+                OUTPUT.append(item['categoryName'])
+    except:
+        print "no topics found"
 
-var = sys.argv[1]
-getTweets(var)
+    return OUTPUT 
+
+if __name__ == "__main__":
+    var = sys.argv[1]
+    o = getTweets(var)
+    print ", ".join(o)

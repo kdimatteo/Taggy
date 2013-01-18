@@ -14,6 +14,10 @@ API_KEY = os.environ['API_KEY']
 calais = Calais(API_KEY, submitter="python-calais demo")
 
 
+def topics_from_url(u):
+    result = calais.analyze_url(u)
+    return result.topics
+
 def getTopics(filename):
 
     '''
@@ -51,5 +55,6 @@ def getTopics(filename):
     print ", ".join(OUTPUT)
     '''
 
-urlPile = sys.argv[1]
-getTopics(urlPile)
+if __name__ == "__main__":
+    urlPile = sys.argv[1]
+    getTopics(urlPile)
