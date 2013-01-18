@@ -1,6 +1,6 @@
 *.pyc
 env_vars
-venv/*
+venv
 *.DS_Store
 .DS_Store
 calais_mq_tags.txt
