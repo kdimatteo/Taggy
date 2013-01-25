@@ -7,7 +7,7 @@
 
 $(function(){
 	"use strict";
-	var BASE_URL = "http://127.0.0.1:5000";
+	var BASE_URL = ""; //"http://127.0.0.1:5000";
 
 
 	/**
@@ -32,9 +32,13 @@ $(function(){
 		getTerm: function(){
 			var q = $("#term").val();
 			this.model.fetch({data:{"term":q}});
+			$("#termIndicator").removeClass("hidden");
+			$("#termIndicator").show();
 		},
 		render: function(){
 			var responseObj = this.model.toJSON();
+			$("#termIndicator").hide();
+			$("#termResults").empty();
 			for(var key in responseObj.response){
 				if (responseObj.response.hasOwnProperty(key)){
 					$("#termResults").append("<li>" + responseObj.response[key]);
@@ -69,9 +73,13 @@ $(function(){
 		getTerm: function(){
 			var q = $("#url").val();
 			this.model.fetch({data:{"term":q}});
+			$("#urlIndicator").removeClass("hidden");
+			$("#urlIndicator").show();
 		},
 		render: function(){
 			var responseObj = this.model.toJSON();
+			$("#urlIndicator").hide();
+			$("#urlResults").empty();
 			for(var key in responseObj.response){
 				if (responseObj.response.hasOwnProperty(key)){
 					$("#urlResults").append("<li>" + responseObj.response[key]["categoryName"]);
