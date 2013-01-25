@@ -3,43 +3,83 @@
  * @file /js/
  * @fileoverview A View
  * @author Keith DiMatteo
- * @copyright Copyright 2012, Sapient Corporation. All rights reserved.
  */
 
-define(["txt!template/main.html"], function(tplMain){
-
+$(function(){
+	"use strict";
 	var BASE_URL = "http://127.0.0.1:5000";
 
-	var URLModel = Backbone.Model.Extend({
-		term : "",
+
+	/**
+	 * Process a Term on Twitter
+	 * ----------------------------------
+	 */
+
+	var TermModel = Backbone.Model.extend({
 		url : function(){
-			return BASE_URL + "/getURL?q=" +  this.term;
-		} 
+			return BASE_URL + "/term/"; //+ this.params["term"]
+		}
 	});
 
-	var mainView = Backbone.View.extend({
-		
+	var TermView = Backbone.View.extend({
+		el : $("#main"),
 		events: {
-			"click #btnTerm" : "getTerm",
-			"click #btnURL"  :  "getURL"
+			"click #btnTerm" : "getTerm"
 		},
-
+		initialize: function(){
+			this.model.bind("change", this.render, this);
+		},
 		getTerm: function(){
 			var q = $("#term").val();
+			this.model.fetch({data:{"term":q}});
 		},
-
-		getURL: function(){
-			var q = $("#url").val();
-		},
-
-		initialize: function(){
-			//this.collection.bind("reset", this.render, this);
-		},
-
 		render: function(){
-			$("#main").html(tplMain);
-			return this;
+			var responseObj = this.model.toJSON();
+			for(var key in responseObj.response){
+				if (responseObj.response.hasOwnProperty(key)){
+					$("#termResults").append("<li>" + responseObj.response[key]);
+				}
+			}
 		}
 
-	});	
+	});
+	
+	var termView = new TermView({model:new TermModel()});
+
+
+	/**
+	 * Process a URL
+	 * ----------------------------------
+	 */
+
+	var URLModel = Backbone.Model.extend({
+		url : function(){
+			return BASE_URL + "/url/"; //+ this.params["term"]
+		}
+	});
+
+	var URLView = Backbone.View.extend({
+		el : $("#main"),
+		events: {
+			"click #btnURL" : "getTerm"
+		},
+		initialize: function(){
+			this.model.bind("change", this.render, this);
+		},
+		getTerm: function(){
+			var q = $("#url").val();
+			this.model.fetch({data:{"term":q}});
+		},
+		render: function(){
+			var responseObj = this.model.toJSON();
+			for(var key in responseObj.response){
+				if (responseObj.response.hasOwnProperty(key)){
+					$("#urlResults").append("<li>" + responseObj.response[key]["categoryName"]);
+				}
+			}
+		}
+	});
+
+	var urlView = new URLView({model:new URLModel()});
+
 });
