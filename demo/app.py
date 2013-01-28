@@ -28,8 +28,8 @@ def getTerm():
 	#term = flask.request.json["term"]
 	term = flask.request.args["term"]
 	#return ",".join(flask.request.args)
-	results = {"response": twitter_topic.getTweets(term)}
-	return flask.jsonify(results)
+	return twitter_topic.getTweets(term, return_json=True, debug=False)
+	#return flask.jsonify(results)
 	#return ",".join(flask.request)
 
 

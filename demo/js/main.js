@@ -39,9 +39,10 @@ $(function(){
 			var responseObj = this.model.toJSON();
 			$("#termIndicator").hide();
 			$("#termResults").empty();
-			for(var key in responseObj.response){
-				if (responseObj.response.hasOwnProperty(key)){
-					$("#termResults").append("<li>" + responseObj.response[key]);
+			
+			for(var index in responseObj.calais_results.entities){
+				if (responseObj.calais_results.entities.hasOwnProperty(index)){
+					$("#termResults").append("<li>" + responseObj.calais_results.entities[index]);
 				}
 			}
 		}
